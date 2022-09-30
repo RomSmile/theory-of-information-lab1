@@ -41,6 +41,15 @@ export const TableOfNumbers = ({ text }) => {
     })
 
     Object.keys(obj).map(item => obj[item] /= text.length);
+    Object.keys(obj).sort((first, second) => {
+      if (obj[first] < obj[second]) {
+        return -1;
+      } else if (obj[first] === obj[second]) {
+        return 0;
+      } else {
+        return 1;
+      }
+    });
     
     setObjOfSymbols({ ...obj });
   }, [ text ])
