@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { InputText } from './components/InputText';
+import { TableOfNumbers } from './components/TableOfNumbers';
+import './styles/style.scss'
 
-function App() {
+export const App = () => {
+  const [ text, setText ] = useState('');
+
+  console.log(text);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="container">
+        <div className='container__content'>
+          <InputText setText={setText} />
+          {text
+            ? <TableOfNumbers text={text} />
+            : ''
+          }
+        </div>
+      </div>
     </div>
   );
 }
