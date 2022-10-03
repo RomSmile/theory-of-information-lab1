@@ -52,7 +52,7 @@ export const TableOfNumbers = ({ text }) => {
 
     const str = Object.keys(objOfSymbols)
       .map(item => `${item}: ${objOfSymbols[item]}`)
-      .join('\n');
+      .join('\n') + '\n' + `Shannon formula: ${amountOfInfo}`;
 
     navigator.clipboard.writeText(str)
   }
@@ -80,10 +80,10 @@ export const TableOfNumbers = ({ text }) => {
   return(
     <>
       <TableContainer component={Paper} aria-label="customized table" style={{ marginBottom: '20px'}}>
-        <Table sx={{ minWidth: 320 }} aria-label="simple table">
+        <Table sx={{ minWidth: 250 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Shannon formule</StyledTableCell>
+              <StyledTableCell align="center">Shannon formula</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -94,7 +94,7 @@ export const TableOfNumbers = ({ text }) => {
         </Table>
       </TableContainer>
       <TableContainer component={Paper} aria-label="customized table">
-        <Table sx={{ minWidth: 320 }} aria-label="simple table">
+        <Table sx={{ minWidth: 300 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <StyledTableCell align="center">symbol</StyledTableCell>
