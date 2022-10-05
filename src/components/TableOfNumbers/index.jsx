@@ -18,7 +18,7 @@ export const TableOfNumbers = ({ text }) => {
     let obj = {};
     let info = 0;
 
-    text.split('').forEach((item) => {
+    text.toLowerCase().split('').forEach((item) => {
       if (item in obj) {
         obj = { ...obj, [item]: obj[item] + 1 };
       } else {
@@ -27,15 +27,6 @@ export const TableOfNumbers = ({ text }) => {
     })
 
     Object.keys(obj).map(item => obj[item] /= text.length);
-    Object.keys(obj).sort((first, second) => {
-      if (obj[first] < obj[second]) {
-        return -1;
-      } else if (obj[first] === obj[second]) {
-        return 0;
-      } else {
-        return 1;
-      }
-    });
 
     for (let i = 0; i < Object.keys(obj).length; i++) {
       info += obj[Object.keys(obj)[i]] * Math.log2(obj[Object.keys(obj)[i]]);
@@ -51,6 +42,15 @@ export const TableOfNumbers = ({ text }) => {
     }
 
     const str = Object.keys(objOfSymbols)
+      .sort((first, second) => {
+        if (objOfSymbols[first] > objOfSymbols[second]) {
+          return -1;
+        } else if (objOfSymbols[first] === objOfSymbols[second]) {
+          return 0;
+        } else {
+          return 1;
+        }
+      })
       .map(item => `${item}: ${objOfSymbols[item]}`)
       .join('\n') + '\n' + `Shannon formula: ${amountOfInfo}`;
 
@@ -103,7 +103,15 @@ export const TableOfNumbers = ({ text }) => {
           </TableHead>
           <TableBody>
             {Object.keys(objOfSymbols).length
-              ? Object.keys(objOfSymbols).map((item, index) => (
+              ? Object.keys(objOfSymbols).sort((first, second) => {
+                if (objOfSymbols[first] > objOfSymbols[second]) {
+                  return -1;
+                } else if (objOfSymbols[first] === objOfSymbols[second]) {
+                  return 0;
+                } else {
+                  return 1;
+                }
+              }).map((item, index) => (
                 <StyledTableRow
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
