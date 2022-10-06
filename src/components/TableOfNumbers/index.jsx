@@ -1,57 +1,50 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { styled } from '@mui/material/styles';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
+import {
+  Button,
+  Paper,
+  TableRow,
+  TableHead,
+  TableContainer,
+  TableBody,
+  Table,
+  TableCell,
+  tableCellClasses,
+  styled,
+} from '@mui/material';
 
-export const TableOfNumbers = ({ text }) => {
-  const [ objOfSymbols, setObjOfSymbols ] = useState({});
+export const TableOfNumbers = ({ objText }) => {
   const [ amountOfInfo, setAmountOfInfo ] = useState(0);
+  const [ arrToRender, setArrToRender ] = useState([])
 
   useEffect(() => {
-    let obj = {};
     let info = 0;
 
-    text.toLowerCase().split('').forEach((item) => {
-      if (item in obj) {
-        obj = { ...obj, [item]: obj[item] + 1 };
-      } else {
-        obj = { ...obj, [item]: 1 };
-      }
-    })
-
-    Object.keys(obj).map(item => obj[item] /= text.length);
-
-    for (let i = 0; i < Object.keys(obj).length; i++) {
-      info += obj[Object.keys(obj)[i]] * Math.log2(obj[Object.keys(obj)[i]]);
-    }
-
-    setAmountOfInfo(-1 * info);
-    setObjOfSymbols({ ...obj });
-  }, [ text ])
-
-  const copyHandler = () => {
-    if (!Object.keys(objOfSymbols)) {
-      return;
-    }
-
-    const str = Object.keys(objOfSymbols)
-      .sort((first, second) => {
-        if (objOfSymbols[first] > objOfSymbols[second]) {
+    const arr = [
+      ...Object.keys(objText).sort((first, second) => {
+        if (objText[first] > objText[second]) {
           return -1;
-        } else if (objOfSymbols[first] === objOfSymbols[second]) {
+        } else if (objText[first] === objText[second]) {
           return 0;
         } else {
           return 1;
         }
       })
-      .map(item => `${item}: ${objOfSymbols[item]}`)
+    ];
+
+    for (let i = 0; i < Object.keys(objText).length; i++) {
+      info += objText[Object.keys(objText)[i]] * Math.log2(objText[Object.keys(objText)[i]]);
+    }
+
+    setArrToRender([ ...arr ]);
+    setAmountOfInfo(-1 * info);
+  }, [objText])
+
+  const copyHandler = () => {
+    if (!Object.keys(objText)) {
+      return;
+    }
+
+    const str = arrToRender.map(item => `${item}: ${objText[item]}`)
       .join('\n') + '\n' + `Shannon formula: ${amountOfInfo}`;
 
     navigator.clipboard.writeText(str)
@@ -102,22 +95,14 @@ export const TableOfNumbers = ({ text }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(objOfSymbols).length
-              ? Object.keys(objOfSymbols).sort((first, second) => {
-                if (objOfSymbols[first] > objOfSymbols[second]) {
-                  return -1;
-                } else if (objOfSymbols[first] === objOfSymbols[second]) {
-                  return 0;
-                } else {
-                  return 1;
-                }
-              }).map((item, index) => (
+            {arrToRender.length
+              ? arrToRender.map((item, index) => (
                 <StyledTableRow
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <StyledTableCell align="center" style={{ padding: "16px 8px"}}>{item}</StyledTableCell>
-                  <StyledTableCell align="center">{objOfSymbols[item]}</StyledTableCell>
+                  <StyledTableCell align="center">{objText[item]}</StyledTableCell>
                 </StyledTableRow>
               ))
               : ''

@@ -3,13 +3,13 @@ import { InputText } from '../components/InputText';
 import { TableOfNumbers } from '../components/TableOfNumbers';
 
 export const Main = () => {
-  const [ text, setText ] = useState('');
+  const [ objText, setObjText ] = useState('');
 
   return (
     <>
-      <InputText setText={setText} />
-      {text
-        ? <TableOfNumbers text={text} />
+      <InputText setObjText={setObjText} />
+      {Object.keys(objText).length
+        ? <TableOfNumbers objText={objText} />
         : ''
       }
     </>

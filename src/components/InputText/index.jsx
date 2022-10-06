@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import './style.scss'
 
-export const InputText = ({ setText }) => {
+export const InputText = ({ setObjText }) => {
   const [ enteredText, setEnteredText ] = useState('');
 
   return (
@@ -25,7 +25,18 @@ export const InputText = ({ setText }) => {
           size="medium"
           color="secondary"
           onClick={() => {
-            setText(enteredText)
+            let obj = {};
+            enteredText.toLowerCase().split('').forEach((item) => {
+              if (item in obj) {
+                obj = { ...obj, [item]: obj[item] + 1 };
+              } else {
+                obj = { ...obj, [item]: 1 };
+              }
+            })
+
+            Object.keys(obj).map(item => obj[item] /= enteredText.length)
+
+            setObjText(obj)
           }}
           loadingPosition="start"
           variant="contained"
